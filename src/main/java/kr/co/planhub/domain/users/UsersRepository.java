@@ -1,4 +1,4 @@
-package kr.co.planhub.planhub.domain.users;
+package kr.co.planhub.domain.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
