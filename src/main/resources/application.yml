@@ -1,21 +1,22 @@
 spring:
     datasource:
-        username: root
-        password: F84f865205!
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/planhub?serverTimezone=UTC&characterEncoding=UTF-8
+        hikari:
+            username: ${DB_USER}
+            password: ${DB_PASSWORD}
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            jdbc-url: jdbc:mysql://${DB_HOST}:${DB_PORT}/planhub?serverTimezone=UTC&characterEncoding=UTF-8
     jpa:
-        show-sql: true
-        hibernate:
-            ddl-auto: validate
-        database: mysql
         properties:
             hibernate:
                 format_sql: true
+                dialect: org.hibernate.dialect.MySQL57Dialect
+        show-sql: true
+        generate-ddl: false
+
     # 콘솔 확인 을 위한 always
-    output:
-        ansi:
-            enabled: always
+#    output:
+#        ansi:
+#            enabled: always
 
 # 파라미터 확인을 위한 trace
 logging:
