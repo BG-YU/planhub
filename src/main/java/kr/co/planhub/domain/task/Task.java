@@ -3,8 +3,10 @@ package kr.co.planhub.domain.task;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,14 +33,16 @@ public class Task {
     private String title;
 
     @Column(name = "count", nullable = false)
-    private Long readCount;
+    private Integer readCount;
 
-    @Column(name = "created_at", nullable = false)
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "created_id", nullable = false)
+    @Column(name = "created_id", nullable = false, updatable = false)
     private Long createdId;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
@@ -47,13 +51,11 @@ public class Task {
 
     @Builder
     public Task(Long userId, String title) {
-        this.userId = 1L;
-        this.title = "test";
-        this.readCount = 100L;
-        this.createdId = 1L;
-        this.createdAt = LocalDateTime.now();
-        this.updatedId = 1L;
-        this.updatedAt = LocalDateTime.now();
+        this.userId = userId;
+        this.title = title;
+        this.readCount = 0;
+        this.createdId = userId;
+        this.updatedId = userId;
     }
 
     public static Task create(Long id, String title) {
@@ -61,5 +63,20 @@ public class Task {
                 .userId(id)
                 .title(title)
                 .build();
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", upperId=" + upperId +
+                ", title='" + title + '\'' +
+                ", readCount=" + readCount +
+                ", createdAt=" + createdAt +
+                ", createdId=" + createdId +
+                ", updatedAt=" + updatedAt +
+                ", updatedId=" + updatedId +
+                '}';
     }
 }
