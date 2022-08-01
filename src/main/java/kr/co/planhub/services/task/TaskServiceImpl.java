@@ -4,22 +4,17 @@ import kr.co.planhub.domain.task.SubTask;
 import kr.co.planhub.domain.task.SubTaskRepository;
 import kr.co.planhub.domain.task.Task;
 import kr.co.planhub.domain.task.TaskRepository;
-import kr.co.planhub.domain.task.dto.UserTaskDTO;
-import kr.co.planhub.response.task.ItemResponse;
+import kr.co.planhub.response.task.TaskResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -30,8 +25,29 @@ public class TaskServiceImpl implements TaskService{
     private final SubTaskRepository subTaskRepository;
 
     @Override
-    public Page<UserTaskDTO> findTask(Pageable pageable, Long userId, Long id) {
-        return taskRepository.findTask(pageable, userId, id);
+    public List<TaskResponse> findTask(Long userId, Long id) {
+        List<Task> tasks = taskRepository.findAllByUserIdAndIdLessThanOrderByIdDesc(userId, id);
+        List<SubTask> subTasks = subTaskRepository.findAllByTaskIn(tasks);
+        return subTasks.stream()
+                .collect(groupingBy(SubTask::getTask))
+                .entrySet()
+                .stream()
+                .map(task -> TaskResponse.of(
+                        task.getKey().getId(),
+                        task.getKey().getUserId(),
+                        task.getKey().getUpperId(),
+                        task.getKey().getTitle(),
+                        task.getKey().getReadCount(),
+                        task.getValue()
+                                .stream()
+                                .map(subTask -> TaskResponse.ItemResponse.of(
+                                        subTask.getId(),
+                                        subTask.getItem(),
+                                        subTask.getCheckType(),
+                                        subTask.getSort()))
+                                .collect(toList())
+                ))
+                .collect(toList());
     }
 
     @Override

@@ -1,13 +1,11 @@
 package kr.co.planhub.controller.task;
 
 import kr.co.planhub.domain.task.SubTask;
-import kr.co.planhub.domain.task.dto.UserTaskDTO;
 import kr.co.planhub.request.task.CreateTaskRequest;
+import kr.co.planhub.response.task.TaskResponse;
 import kr.co.planhub.services.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,9 +19,9 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @GetMapping("/user/{id:\\d+}/task/{taskId:\\d+}")
-    public Page<UserTaskDTO> findTask(Pageable pageable, @PathVariable("id") Long userId, @PathVariable("taskId") Long id) {
-        return taskService.findTask(pageable, userId, id);
+    @GetMapping
+    public List<TaskResponse> findTask(@RequestParam("userId") Long userId, @RequestParam("id") Long id) {
+        return taskService.findTask(userId, id);
     }
 
     @PostMapping
