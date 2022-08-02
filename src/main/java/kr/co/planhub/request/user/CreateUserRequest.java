@@ -1,4 +1,4 @@
-package kr.co.planhub.request;
+package kr.co.planhub.request.user;
 
 import lombok.Getter;
 
