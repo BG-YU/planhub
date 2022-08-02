@@ -28,8 +28,7 @@ public class TaskController {
 
     @PostMapping
     public List<SubTask> createTask(@RequestBody CreateTaskRequest request) {
-        log.info("request : {}", request.toString());
-        System.out.println(String.join(",", new String[]{"시간이요", String.valueOf(LocalDateTime.now())}));
-        return taskService.createTask(request.getUserId(), request.getTitle(), request.getItem());
+        return taskService.createTask(
+                request.getUserId(), request.getTitle(), request.getItem());
     }
 }
