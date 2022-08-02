@@ -6,6 +6,6 @@ import kr.co.planhub.response.task.TaskResponse;
 import java.util.List;
 
 public interface TaskService {
-    List<TaskResponse> findTask(Long userId, Long id);
+    List<TaskResponse> pagingTasks(Long userId, Long taskId, Long pageSize);
     List<SubTask> createTask(Long userId, String title, List<String> item);
 }

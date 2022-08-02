@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -20,14 +19,16 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<TaskResponse> findTask(@RequestParam("userId") Long userId, @RequestParam("id") Long id) {
-        return taskService.findTask(userId, id);
+    public List<TaskResponse> pagingTasks(
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "taskId", required = false) Long taskId,
+            @RequestParam(value = "pageSize") Long pageSize) {
+        return taskService.pagingTasks(userId, taskId, pageSize);
     }
 
     @PostMapping
     public List<SubTask> createTask(@RequestBody CreateTaskRequest request) {
-        log.info("request : {}", request.toString());
-        System.out.println(String.join(",", new String[]{"시간이요", String.valueOf(LocalDateTime.now())}));
-        return taskService.createTask(request.getUserId(), request.getTitle(), request.getItem());
+        return taskService.createTask(
+                request.getUserId(), request.getTitle(), request.getItem());
     }
 }
