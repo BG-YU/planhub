@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -20,8 +19,11 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<TaskResponse> findTask(@RequestParam("userId") Long userId, @RequestParam("id") Long id) {
-        return taskService.findTask(userId, id);
+    public List<TaskResponse> pagingTasks(
+            @RequestParam(value = "userId") Long userId,
+            @RequestParam(value = "taskId", required = false) Long taskId,
+            @RequestParam(value = "pageSize") Long pageSize) {
+        return taskService.pagingTasks(userId, taskId, pageSize);
     }
 
     @PostMapping
