@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class TaskResponse {
+public class PagingTaskDTO {
     private final Long id;
     private final Long userId;
     private final Long upperId;
@@ -14,7 +14,7 @@ public class TaskResponse {
     private final Integer readCount;
     private final List<ItemResponse> items;
 
-    private TaskResponse(Long id, Long userId, Long upperId, String title, Integer readCount, List<ItemResponse> items) {
+    private PagingTaskDTO(Long id, Long userId, Long upperId, String title, Integer readCount, List<ItemResponse> items) {
         this.id = id;
         this.userId = userId;
         this.upperId = upperId;
@@ -23,8 +23,8 @@ public class TaskResponse {
         this.items = items;
     }
 
-    public static TaskResponse of(Long id, Long userId, Long upperId, String title, Integer readCount, List<ItemResponse> items) {
-        return new TaskResponse(id, userId, upperId, title, readCount, items);
+    public static PagingTaskDTO of(Long id, Long userId, Long upperId, String title, Integer readCount, List<ItemResponse> items) {
+        return new PagingTaskDTO(id, userId, upperId, title, readCount, items);
     }
 
     @Getter

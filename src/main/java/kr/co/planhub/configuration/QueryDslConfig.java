@@ -1,4 +1,4 @@
-package kr.co.planhub.config;
+package kr.co.planhub.configuration;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
